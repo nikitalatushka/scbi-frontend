@@ -1,0 +1,30 @@
+name: Deploy to Hostinger`
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy with rsync over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with: 
+          host: ${{ secrets.HOSTINGER_IP }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          source: "."
+          target: ${{ secrets.HOSTINGER_DEPLOY_PATH }}
+          args: "-az --delete --exclude=.git/ --exclude=.github/ --exclude=node_modules/ --exclude=package.json --exclude=package-lock.json --exclude=yarn.lock"
+        
+      - name: Clean up
+        run: |
+          echo "Deployment successful!"
+         
