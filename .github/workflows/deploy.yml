@@ -19,4 +19,4 @@ jobs:
           port: ${{ secrets.FTP_PORT}}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD}}
-          server-dir: /scbi
+          server-dir: scbi/
